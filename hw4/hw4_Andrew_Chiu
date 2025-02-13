@@ -1,1 +1,84 @@
+#Task 1
+import csv
+filename= "WeatherData.txt"
+def analyze_climate_data(filename:str)-> (int, int, float, float, float, float):
+    total_days = 0  #count the total number of days recorded
+    days_with_precipitation = 0   #days it rain
+    temperature= []
+    mean_humidity = []
+    mean_precipitation = []
 
+    with open(filename , "r") as file:
+        for line in file:
+            if line.strip():   #skip emtpy line
+                min_temp, max_temp, humidity, precipitation = map(float, line.strip().split(",")) #MAP function convert each string into float
+                
+                total_days += 1 # for each line in the row total days increase by one
+                if precipitation > 0:
+                    days_with_precipitation += 1
+                temperature.append(min_temp)
+                temperature.append(max_temp)
+                mean_humidity.append(humidity)
+                mean_precipitation.append(precipitation)
+    
+    min_temperature= min(temperature)   #after append i can compute min and max
+    max_temperature= max(temperature)
+    mean_humidity = round(sum(mean_humidity) / len(mean_humidity), 2)
+    mean_precipitation = round(sum(mean_precipitation) / len(mean_precipitation), 2)
+
+
+    return total_days, days_with_precipitation , min_temperature, max_temperature, mean_humidity, mean_precipitation
+
+result= analyze_climate_data(filename)
+print(result)
+# total days, #precipitation days #lowest temp # highest temp #mean hum # mean precip
+
+
+#Task 2
+import csv
+filename= "WeatherData.txt"
+
+def rainfall_prediction(filename:str)-> (int, int):
+    rainy_days_predicted = 0
+    correct_predictions = 0
+
+    with open(filename, "r") as file:
+        for line in file:
+            if line.strip(): 
+                min_temp, max_temp, humidity, precipitation = map(float, line.strip().split(","))
+
+                rainy = (max_temp - min_temp > 10) and (humidity > 50)  #temperature difference >10 and humidity > 50
+            
+            if rainy:
+                rainy_days_predicted += 1        
+
+            if (rainy and precipitation > 0) or (not rainy and precipitation == 0):    #comparison operator, precipitation must be greater than 0
+                correct_predictions += 1              #precipitation greater than 0 and rainy predicted will mean correct predictions.
+    return rainy_days_predicted, correct_predictions
+
+result = rainfall_prediction(filename)
+print(result)      # correct prediction= rainy T Precipitation >0 or rainy F precipitation = 0
+
+
+import csv
+source_file = "WeatherData.txt"
+destination_file= "WeatherDataForecast.csv"
+
+def export_weather_predictions(source_file: str, destination_file: str):
+    with open(source_file, "r") as file, open(destination_file, "w", newline = "") as output_file:
+        reader= csv.reader(file)
+        writer= csv.writer(output_file)
+
+        writer.writerow(["Minimum Temperature", "Maximum Temperature", "Humiditity", "Precipitation", "Forecast"])
+
+        for row in reader:
+            if row:
+                min_temp, max_temp, humidity, precipitation = map(float, row)
+
+                rainy= (max_temp - min_temp > 10) and (humidity >50)
+                forecast= "rainy" if rainy else "sunny"
+
+                writer.writerow([min_temp, max_temp, humidity, precipitation, forecast])
+
+export_weather_predictions(source_file, destination_file)
+print(f"Forecast exported to {destination_file}")
