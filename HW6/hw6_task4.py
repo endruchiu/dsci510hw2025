@@ -60,12 +60,12 @@ class PremiumShopper(Shopper):
 
 RTX_4090 = Product("1", "RTX_4090", 1999.99, 10)
 Call_of_Duty = Product("2", "Call_of_Duty", 70, 100)
-
+#Calculate my total
 shopper = Shopper("Andrew", "007")
 shopper.add_item(RTX_4090, 1)
 shopper.add_item(Call_of_Duty,1)
 print(shopper)
-
+#Removing one of my items
 shopper = Shopper("Andrew", "007")
 shopper.add_item(RTX_4090, 1)
 shopper.add_item(Call_of_Duty,1)
@@ -73,7 +73,7 @@ shopper.add_item(Call_of_Duty,1)
 shopper.remove_item(Call_of_Duty, 1)
 
 print(shopper)
-
+#Premium shopper privillege
 shopper = PremiumShopper("Andrew", "007")
 shopper.add_item(RTX_4090, 1)
 shopper.add_item(Call_of_Duty,1)
