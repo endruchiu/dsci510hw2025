@@ -24,3 +24,9 @@ class Product: #class
 
 product = Product("12345", "Coffee Mug", 12.99, 100)
 print(product)
+
+#Sell coffee example
+product = Product("12345", "Coffee Mug", 12.99, 100)
+product.sell_product(2)
+
+print(product)
